@@ -19,8 +19,9 @@ class _AuthScreenState extends State<AuthScreen> {
   var _isLogin = true;
   var _enteredEmail = '';
   var _enteredPassword = '';
+  var _enteredUsername = '';
   File? _userImageFile;
-  var isUploading = false;
+  var _isAuthenticating = false;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -32,7 +33,7 @@ class _AuthScreenState extends State<AuthScreen> {
     }
 
     setState(() {
-      isUploading = true;
+      _isAuthenticating = true;
     });
 
     _formKey.currentState!.save();
@@ -63,7 +64,7 @@ class _AuthScreenState extends State<AuthScreen> {
             .collection('users')
             .doc(userCredentials.user!.uid)
             .set({
-          'username': 'To be added...',
+          'username': _enteredUsername,
           'email': _enteredEmail,
           'imageURL': imageURL,
         });
@@ -79,7 +80,7 @@ class _AuthScreenState extends State<AuthScreen> {
         ),
       );
       setState(() {
-        isUploading = false;
+        _isAuthenticating = false;
       });
     }
   }
@@ -139,6 +140,21 @@ class _AuthScreenState extends State<AuthScreen> {
                               _enteredEmail = value!;
                             },
                           ),
+                          if (!_isLogin)
+                            TextFormField(
+                              decoration: const InputDecoration(
+                                labelText: 'Username',
+                              ),
+                              validator: (value) {
+                                if (value == null || value.trim().length < 4) {
+                                  return 'Username must be at least 4 letters';
+                                }
+                                return null;
+                              },
+                              onSaved: (value) {
+                                _enteredUsername = value!;
+                              },
+                            ),
                           TextFormField(
                             decoration: const InputDecoration(
                               labelText: 'Password',
@@ -155,8 +171,9 @@ class _AuthScreenState extends State<AuthScreen> {
                             },
                           ),
                           const SizedBox(height: 12),
-                          if (isUploading) const CircularProgressIndicator(),
-                          if (!isUploading)
+                          if (_isAuthenticating)
+                            const CircularProgressIndicator(),
+                          if (!_isAuthenticating)
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Theme.of(context)
@@ -170,7 +187,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                 _isLogin ? 'Login' : 'Sign Up',
                               ),
                             ),
-                          if (!isUploading)
+                          if (!_isAuthenticating)
                             TextButton(
                               onPressed: () {
                                 setState(() {
