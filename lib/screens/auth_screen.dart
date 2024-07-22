@@ -28,7 +28,7 @@ class _AuthScreenState extends State<AuthScreen> {
   void _submit() async {
     final isValid = _formKey.currentState!.validate();
 
-    if (!isValid || _userImageFile == null) {
+    if (((!isValid || _userImageFile == null) && !_isLogin) || !isValid) {
       return;
     }
 
@@ -43,12 +43,13 @@ class _AuthScreenState extends State<AuthScreen> {
           email: _enteredEmail,
           password: _enteredPassword,
         );
-        print(userCredentials);
+        // print(userCredentials);
       } else {
         final userCredentials = await _firebase.createUserWithEmailAndPassword(
           email: _enteredEmail,
           password: _enteredPassword,
         );
+        // print(userCredentials);
 
         final storageRef = FirebaseStorage.instance
             .ref()
@@ -58,7 +59,7 @@ class _AuthScreenState extends State<AuthScreen> {
         await storageRef.putFile(_userImageFile!);
 
         final imageURL = await storageRef.getDownloadURL();
-        print(imageURL);
+        // print(imageURL);
 
         await FirebaseFirestore.instance
             .collection('users')
@@ -146,7 +147,9 @@ class _AuthScreenState extends State<AuthScreen> {
                                 labelText: 'Username',
                               ),
                               validator: (value) {
-                                if (value == null || value.trim().length < 4) {
+                                if ((value == null ||
+                                        value.trim().length < 4) &&
+                                    !_isLogin) {
                                   return 'Username must be at least 4 letters';
                                 }
                                 return null;
