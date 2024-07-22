@@ -52,6 +52,8 @@ class _NewMessageState extends State<NewMessage> {
             child: TextField(
               decoration: const InputDecoration(labelText: 'Send message'),
               controller: messageController,
+              autocorrect: true,
+              enableSuggestions: true,
             ),
           ),
           IconButton(

@@ -39,6 +39,7 @@ class _AuthScreenState extends State<AuthScreen> {
     _formKey.currentState!.save();
     try {
       if (_isLogin) {
+        // ignore: unused_local_variable
         final userCredentials = await _firebase.signInWithEmailAndPassword(
           email: _enteredEmail,
           password: _enteredPassword,
@@ -146,6 +147,8 @@ class _AuthScreenState extends State<AuthScreen> {
                               decoration: const InputDecoration(
                                 labelText: 'Username',
                               ),
+                              autocorrect: false,
+                              enableSuggestions: false,
                               validator: (value) {
                                 if ((value == null ||
                                         value.trim().length < 4) &&
