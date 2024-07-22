@@ -1,4 +1,6 @@
+import 'package:chat_app/widgets/message_bubble.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ChatMessages extends StatelessWidget {
@@ -6,10 +8,15 @@ class ChatMessages extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currentUser = FirebaseAuth.instance.currentUser;
+
     return StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('chat')
-            .orderBy('createdAt', descending: false)
+            .orderBy(
+              'createdAt',
+              descending: true,
+            )
             .snapshots(),
         builder: (ctx, chatSnapshots) {
           if (chatSnapshots.connectionState == ConnectionState.waiting) {
@@ -32,9 +39,30 @@ class ChatMessages extends StatelessWidget {
 
           final chatDocs = chatSnapshots.data!.docs;
           return ListView.builder(
+              reverse: true,
               itemCount: chatDocs.length,
               itemBuilder: (ctx, index) {
-                return Text(chatDocs[index]['text']);
+                final chatMessage = chatDocs[index].data();
+                final nextChatMessage = index + 1 < chatDocs.length
+                    ? chatDocs[index + 1].data()
+                    : null;
+                final isFirstMessage = nextChatMessage == null ||
+                    nextChatMessage['userId'] != chatMessage['userId'];
+                final isMe = chatMessage['userId'] == currentUser!.uid;
+
+                if (isFirstMessage) {
+                  return MessageBubble.first(
+                    userImage: chatMessage['imageUrl'],
+                    username: chatMessage['username'],
+                    message: chatMessage['text'],
+                    isMe: isMe,
+                  );
+                }
+
+                return MessageBubble.next(
+                  message: chatMessage['text'],
+                  isMe: isMe,
+                );
               });
         });
   }
