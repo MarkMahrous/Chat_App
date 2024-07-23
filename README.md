@@ -63,8 +63,8 @@ A mobile application designed to allow users to sign up, log in, and chat with e
 
 ### Chat
 <p float="left">
-  <img src="https://github.com/MarkMahrous/Chat_App/blob/main/Screenshots/chat1.jpg" width="300">
   <img src="https://github.com/MarkMahrous/Chat_App/blob/main/Screenshots/chat2.jpg" width="300">
+  <img src="https://github.com/MarkMahrous/Chat_App/blob/main/Screenshots/chat1.jpg" width="300">
 </p>
 
 ### Recieve Notifications
