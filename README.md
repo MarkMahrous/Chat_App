@@ -13,6 +13,7 @@ A mobile application designed to allow users to sign up, log in, and chat with e
 
 - **Sign Up**: Create a new account by providing an email address, password, username, and profile image.
 - **Log In**: Access your account by logging in with your existing credentials.
+- **Log Out**: Easily log out from your account when you need to.
 - **Send Messages**: Logged-in users can send messages to the chat, visible to all other logged-in users, who can also reply.
 - **Receive Notifications**: Get notifications whenever a user sends a message while the app is closed.
   
@@ -55,7 +56,7 @@ A mobile application designed to allow users to sign up, log in, and chat with e
   <img src="https://github.com/MarkMahrous/Chat_App/blob/main/Screenshots/signup2.jpg" width="300">
 </p>
 
-### Login
+### Log In
 <p float="left">
   <img src="https://github.com/MarkMahrous/Chat_App/blob/main/Screenshots/login1.jpg" width="300">
   <img src="https://github.com/MarkMahrous/Chat_App/blob/main/Screenshots/login2.jpg" width="300">
